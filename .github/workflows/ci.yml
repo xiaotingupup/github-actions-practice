@@ -1,0 +1,31 @@
+# 工作流名称
+name: Python单元测试
+
+# 触发条件：推送代码、提交PR时自动运行
+on: [push, pull_request]
+
+# 任务定义
+jobs:
+  test:
+    # 运行环境：最新版Ubuntu系统
+    runs-on: ubuntu-latest
+    steps:
+      # 步骤1：把仓库代码拉取到虚拟环境中
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      # 步骤2：配置Python 3.11环境
+      - name: 设置Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 步骤3：升级pip并安装pytest测试框架
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      # 步骤4：执行pytest命令运行测试
+      - name: 运行测试
+        run: pytest -v
